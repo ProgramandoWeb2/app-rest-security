@@ -3,6 +3,7 @@ package pe.edu.cibertec.app_rest_security.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,7 +31,7 @@ public class DetalleUsuarioService implements UserDetailsService {
     }
 
 
-    public List<GrantedAuthority> obtenerRolesUsuario(Set<Rol> rolesList){
+    private List<GrantedAuthority> obtenerRolesUsuario(Set<Rol> rolesList){
         List<GrantedAuthority> rolesAuth = new ArrayList<>();
         for (Rol rol : rolesList){
             rolesAuth.add(new SimpleGrantedAuthority(
@@ -38,5 +39,18 @@ public class DetalleUsuarioService implements UserDetailsService {
         }
         return rolesAuth;
     }
+    private UserDetails crearUserDetail(
+            Usuario usuario, List<GrantedAuthority> authorityList
+    ){
+        return new User(
+                usuario.getNomusuario(),
+                usuario.getPassword(),
+                usuario.getActivo(),
+                true,
+                true,
+                true,
+                authorityList);
+    }
+
 
 }
