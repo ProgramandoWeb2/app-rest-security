@@ -26,12 +26,11 @@ public class DetalleUsuarioService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
         Usuario usuario = usuarioService.obtenerUsuarioXnombre(username);
-
-        return null;
+        return crearUserDetail(usuario,
+                obtenerRolesUsuario(usuario.getRoles()));
     }
 
-
-    private List<GrantedAuthority> obtenerRolesUsuario(Set<Rol> rolesList){
+    public List<GrantedAuthority> obtenerRolesUsuario(Set<Rol> rolesList){
         List<GrantedAuthority> rolesAuth = new ArrayList<>();
         for (Rol rol : rolesList){
             rolesAuth.add(new SimpleGrantedAuthority(
